@@ -15,8 +15,8 @@ window.addEventListener("load", function () {
 
     menuHover();
     popup();
+    retouchPopup()
     popupRun();
-    checkDelete();
     imgAtt();
     userCheck(id);
 
@@ -229,31 +229,94 @@ function popup() {
 }
 
 
-function checkDelete() {
+//function checkDelete() {
+//
+//    document.querySelector("#list-delete")
+//        .addEventListener("click", function () {
+//
+//            console.log("작동중");
+//
+//            // 선택된 체크박스들을 선택
+//            let div_checked = document.querySelectorAll(".delete-check:checked");
+//
+//            // for(let i = 0; i < div_checked.length; i++) {
+//            //     div_checked[i].parentNode.remove();
+//            // }
+//            
+//
+//            // 선택된 리스트 지우기
+//            div_checked.forEach(function (checkbox) {
+//
+//                checkbox.closest('.workList').remove();
+//            });
+//
+//        });
+//
+//};
 
-    document.querySelector("#list-delete")
-        .addEventListener("click", function () {
 
-            console.log("작동중");
+function retouchPopup() {
 
-            // 선택된 체크박스들을 선택
-            let div_checked = document.querySelectorAll(".delete-check:checked");
-
-            // for(let i = 0; i < div_checked.length; i++) {
-            //     div_checked[i].parentNode.remove();
-            // }
-
-            // 선택된 리스트 지우기
-            div_checked.forEach(function (checkbox) {
-                checkbox.closest('.workList').remove();
-            });
-
-        });
-
-};
+    // 품질검사 지침서 팝업
+    // 팝업 div 랑 버튼가져오기
+    const order_retouch_popup = document.getElementById("order-retouch-popup");
+    const list_retouch_button = document.getElementById("list-retouch-button");
+    const retouch_cancel_apply_button = document.getElementById("retouch-cancel-apply-button");
 
 
+    // 팝업 div 열기
+    list_retouch_button.addEventListener("click", function () {
 
+        document.querySelector("#retouch-title").value = "";
+        document.querySelector("#retouch-detail").value = "";
+//        document.querySelector("#retouch-img").value = "";
+
+        order_retouch_popup.style.display = "block";
+        // 다른영역 클릭 비활성화
+        order_retouch_popup.style.pointerEvents = "auto";
+        
+        
+        // 체크된 체크박스 가져오기
+        let checked = document.querySelectorAll(".delete-check:checked");
+
+        // 폼에 추가할 데이터 넣어주기
+        let form = document.querySelector(".retouch-note");       
+        
+        checked.forEach(function(checkbox) {
+			
+		    let input = document.createElement("input");
+		    input.type = "hidden";
+		    input.name = "checkValue";
+		    input.value = checkbox.value;
+		
+		    form.appendChild(input);
+		});
+        
+    });
+
+    // 팝업 div 닫기 => 닫기버튼누를시
+    retouch_cancel_apply_button.addEventListener("click", function () {
+		console.log("닫기버튼누름");
+        order_retouch_popup.style.display = "none";
+        // 다른영역 클릭 활성화
+        order_retouch_popup.style.pointerEvents = "none";
+    });
+
+    // 팝업 div 닫기버튼 비활성화
+    order_retouch_popup.addEventListener("click", function (event) {
+        event.stopPropagation();
+    });
+
+    // 팝업 div 닫기버튼 활성화
+    window.addEventListener("click", function (event) {
+        if (event.target == order_retouch_popup) {
+            order_retouch_popup.style.display = "none";
+            // 다른영역 클릭 활성화
+            order_retouch_popup.style.pointerEvents = "none";
+        }
+    });
+
+}
 
 
 function popupRun() {
@@ -322,11 +385,14 @@ function popupRun() {
         add_div.innerHTML = html;
         work_list_zip.append(add_div);
 
-
-
-
+	    // form 전송이 완료되면 alert 창 으로 완료 표시
+//	    document.querySelector("#addForm").addEventListner("submit", function() {
+//			
+//		alert("작업지침서가 추가되었습니다");			
+//		});
 
     });
+    
 
 };
 
@@ -343,11 +409,11 @@ function imgAtt() {
 
     chooseFile.addEventListener('change', function (event) {
         event.stopPropagation();
-        event.preventDefault();
-
-        console.log("File chosen");
+        event.preventDefault();        
 
         selectedFile = chooseFile.files && chooseFile.files.length > 0 ? chooseFile.files[0] : null;
+
+		console.log(chooseFile.files[0]);
 
         if (selectedFile) {
             fileNameDisplay.textContent = selectedFile.name;
@@ -399,6 +465,7 @@ function imgAtt() {
             };
         }
     }
+    
 }
 
 

@@ -2,8 +2,21 @@ package workOrder;
 
 public class WorkOrderDTO {
 
+	int seq;
 	String title;
 	String detail;
+	/**
+	 * @return the seq
+	 */
+	public int getSeq() {
+		return seq;
+	}
+	/**
+	 * @param seq the seq to set
+	 */
+	public void setSeq(int seq) {
+		this.seq = seq;
+	}
 	/**
 	 * @return the title
 	 */ 
@@ -30,7 +43,7 @@ public class WorkOrderDTO {
 	}
 	@Override
 	public String toString() {
-		return "WorkOrderDTO [title=" + title + ", detail=" + detail + "]";
+		return "WorkOrderDTO [seq=" + seq + ", title=" + title + ", detail=" + detail + "]";
 	}
 	
 }

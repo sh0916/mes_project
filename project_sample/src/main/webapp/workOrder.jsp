@@ -620,6 +620,29 @@
                 display: flex;
                 justify-content: space-between;
             }
+            
+            
+			/* 수정하기 팝업 */
+            .retouch-popup {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.7);
+            }
+            
+            .retouch-popup-content {
+                background-color: white;
+                margin: 15% auto;
+                margin-top: 5%;
+                padding: 20px;
+                width: 50%;
+                border-radius: 5px;
+                position: relative;
+                text-align: center;
+            }
     
             /* aside, section 끝*/
     
@@ -957,7 +980,7 @@
                 </aside>
                 <section>
                     <article>
-                    	<form method="post" action="WorkOrderServlet">
+                    	<form method="post" action="workOrderDel">
 	                        <div class="work-main">
 	                            <div id="work-content" class="work-content">
 	    
@@ -982,6 +1005,7 @@
 										%>
 	                                    <%	
 	                                      	for(int i = 0; i < list.size(); i++) {
+	                                      		int seq = list.get(i).getSeq();
 		                                      	String title = list.get(i).getTitle();
 		                                      	String detail = list.get(i).getDetail();
 		                                      	
@@ -989,13 +1013,13 @@
 	                                    %>
 		                                        <div class="workList">
 		                                        	<div class="delete-checkbox">
-		                                            	<input type="checkbox" class="delete-check">
+		                                            	<input type="checkbox" class="delete-check" name="delCheck" value="<%= seq %>">
 		                                        	</div>
 		                                        	<div class="workOrder">
-		                                            	<p>
+		                                            	<p class="w_title">
 					                                        <%= title %>
 					                                    </p>
-					                                    <p>     
+					                                    <p class="w_detail">     
 					                                        <%= detail.replace("\\n", "<br>") %>  
 					                                    </p>			                                            
 			                                        </div> 
@@ -1015,6 +1039,7 @@
 	                            </div>
 	                            <div class="button-div">
 	                                <button type="button" id="list-add-button" class="add-button">추가하기</button>
+	                                <button type="button" id="list-retouch-button" class="add-button">수정하기</button>
 	                                <input type="submit" id="list-delete" class="list-delete-button" value="삭제하기">
 	                                <button type="button" id="user" class="add-button">유저</button>
 	                            </div>
@@ -1025,7 +1050,7 @@
     
                         </div>
     
-    					<form method="post" action="WorkOrderServlet">
+    					<form method="post" action="workOrder">
 	                       <div id="order-add-popup" class="add-popup">
 	                           <div class="add-popup-content">
 	                               <h2>조립 공정 체크사항 추가하기</h2>
@@ -1058,6 +1083,44 @@
 	                               <div class="add-apply-div">
 	                                   <input type="submit" id="add-apply-button" class="apply-button" value="적용하기">
 	                                   <button type="button" id="cancel-apply-button" class="cancel-button">취소하기</button>
+	                               </div>
+	                           </div>
+	                       </div>
+                        </form>
+                        
+                        <form method="post" action="workOrderRetouch">
+	                       <div id="order-retouch-popup" class="retouch-popup">
+	                           <div class="retouch-popup-content">
+	                               <h2>조립 공정 체크사항 수정하기</h2>
+	                               <div class="retouch-note">
+	                                   <p>수정할 제목</p>
+	                                   <input type="text" id="retouch-title" class="add-title" name="title" placeholder="제목입력">
+	                                   <p>수정할 목록</p>
+	                                   <textarea id="retouch-detail" class="add-detail" name="detail" rows="5" cols="50"
+	                                       placeholder="내용 입력란"></textarea>
+	                               </div>
+	   
+	                               <div class="img-note">
+	                                   <span class="img-note-title">
+	                                       이미지 링크 첨부하기
+	                                   </span>
+	                                   <div class="img-preview-box">
+	                                       <div class="addImgBox">
+	                                           <input type="text" id="add-img">
+	                                           <input type="file" id="add-img-button" class="img-button" type="file"
+	                                               style="display: none;" name="add-img-button">
+	                                           <label for="add-img-button" id="file-button">파일선택</label>
+	                                           <span id="fileName">선택된 파일 없음</span>
+	                                           <button type="button" id="img-select-button"
+	                                               class="img-select-button">사진선택</button>
+	                                       </div>
+	                                       <div class="img-preview">이미지 없음</div>
+	                                   </div>
+	                               </div>
+	   
+	                               <div class="add-apply-div">
+	                                   <input type="submit" id="retouch-apply-button" class="apply-button" value="적용하기">
+	                                   <button type="button" id="retouch-cancel-apply-button" class="cancel-button">취소하기</button>
 	                               </div>
 	                           </div>
 	                       </div>
